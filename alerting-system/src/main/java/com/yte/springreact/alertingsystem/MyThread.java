@@ -42,7 +42,7 @@ class MyThread implements Runnable {
 		
 	}
 	
-	public String getStatus(String url,String http_method) throws IOException {
+	public String getStatus(String url,String http_method)  {
 		 
 		String result = "";
 		int code = 200;
@@ -50,7 +50,7 @@ class MyThread implements Runnable {
 			URL siteURL = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
 			connection.setRequestMethod(http_method);
-			connection.setConnectTimeout(1000);
+			connection.setConnectTimeout(10);
 			connection.connect();
  
 			code = connection.getResponseCode();
@@ -59,9 +59,9 @@ class MyThread implements Runnable {
 				
 				String alertsResult = alerts.getResult();
 				
-				alertsResult = alertsResult.substring(1, 6);
+				alertsResult = alertsResult.substring(2, 11);
 					
-				alertsResult+="1"; 
+				alertsResult+=",1"; 
 
 				alerts.setResult(alertsResult);
 				
@@ -76,9 +76,9 @@ class MyThread implements Runnable {
 				
 				String alertsResult = alerts.getResult();
 				
-				alertsResult = alertsResult.substring(1, 6);
+				alertsResult = alertsResult.substring(2, 11);
 				
-				alertsResult+="0" ;
+				alertsResult+=",0" ;
 				
 				alerts.setResult(alertsResult);
 				
@@ -90,6 +90,18 @@ class MyThread implements Runnable {
 				
 			}
 		} catch (Exception e) {
+			String alertsResult = alerts.getResult();
+			
+			alertsResult = alertsResult.substring(2, 11);
+			
+			alertsResult+=",0";
+			
+			alerts.setResult(alertsResult);
+			
+			alertsService.save(alerts);
+			
+			System.out.println("Alerts result : "+ alertsResult);
+			
 			result = "Wrong domain - Exception: " + e.getMessage();
 			
 		}

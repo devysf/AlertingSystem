@@ -46,7 +46,7 @@ export default class AlertsList extends Component {
             
             <tbody>
               { this.state.alerts.map(alert => (
-                  <ListItem key={alert.id} alert={alert}/>
+                  <ListItem key={alert.id} alert={alert} history={this.props.history}/>
               ))}
 
             </tbody>
