@@ -1,6 +1,7 @@
 package com.yte.springreact.alertingsystem.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,35 @@ public class AlertsServiceImpl implements AlertsService{
 	@Override
 	public List<Alerts> findAll() {
 		return alertsRepository.findAll();
+	}
+
+
+	@Override
+	public Alerts findById(int alertsId) {
+		Optional<Alerts> result = alertsRepository.findById(alertsId);
+		
+		Alerts theAlerts = null;
+		
+		if(result.isPresent()) {
+			theAlerts = result.get();
+		}
+		else {
+			throw new RuntimeException("Did not find Alerts id - " + alertsId);
+
+		}
+		return theAlerts;
+	}
+
+
+	@Override
+	public void save(Alerts theAlerts) {
+		alertsRepository.save(theAlerts);
+	}
+
+
+	@Override
+	public void deleteById(int alertsId) {
+		alertsRepository.deleteById(alertsId);
 	}
 	
 	

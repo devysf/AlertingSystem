@@ -7,6 +7,12 @@ import com.yte.springreact.alertingsystem.entity.Alerts;
 public interface AlertsService {
 	public List<Alerts> findAll();
 
+	public Alerts findById(int alertsId);
+
+	public void save(Alerts theAlerts);
+
+	public void deleteById(int alertsId);
+
 		
 }
 
