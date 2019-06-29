@@ -1,12 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import NavBar from "./components/NavBar";
+
+import Home from "./components/Home";
+import AddingAlerts from "./components/AddingAlerts";
+import ListAlerts from "./components/ListAlerts";
+import ReportsAlerts from "./components/ReportsAlerts";
+
 
 function App() {
   return (
-    <div className="App">
-      <h1> Hello World </h1>
-    </div>
+      <Router>
+        <div className="App">
+          <NavBar />
+          
+          <Route exact path="/" component={Home} />
+          <Route exact path="/adding" component={AddingAlerts} />
+          <Route exact path="/lists" component={ListAlerts} />
+          <Route exact path="/reports" component={ReportsAlerts} />
+        </div>
+      </Router>
+
   );
 }
 
