@@ -7,7 +7,7 @@ import NavBar from "./components/NavBar";
 
 import Home from "./components/Home";
 import AddingAlerts from "./components/AddingAlerts";
-import ListAlerts from "./components/ListAlerts";
+import AlertsList from "./components/AlertsList";
 import ReportsAlerts from "./components/ReportsAlerts";
 
 
@@ -19,8 +19,8 @@ function App() {
           
           <Route exact path="/" component={Home} />
           <Route exact path="/adding" component={AddingAlerts} />
-          <Route exact path="/lists" component={ListAlerts} />
-          <Route exact path="/reports" component={ReportsAlerts} />
+          <Route exact path="/lists" component={AlertsList} />
+          <Route exact path="/lists/:id" component={ReportsAlerts} />
         </div>
       </Router>
 

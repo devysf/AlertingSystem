@@ -32,11 +32,13 @@ public class AlertsRestController {
 		return "Hello World! ";
 	}
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/alerts")
 	public List<Alerts> findAll() {
 		return alertsService.findAll();
 	}
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/alerts/{alertsId}")
 	public Alerts getAlerts(@PathVariable int alertsId) {
 		
@@ -61,7 +63,7 @@ public class AlertsRestController {
 		
 		return theAlerts;
 	}
-	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/alerts")
 	public Alerts updateAlerts(@RequestBody Alerts theAlerts) {
 		alertsService.save(theAlerts);
@@ -69,7 +71,7 @@ public class AlertsRestController {
 		return theAlerts;
 	}
 	
-	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("/alerts/{alertsId}")
 	public String deleteAlerts(@PathVariable int alertsId) {
 		Alerts tempAlerts = alertsService.findById(alertsId);
