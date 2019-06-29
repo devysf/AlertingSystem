@@ -92,8 +92,6 @@ class MyThread implements Runnable {
 		} catch (Exception e) {
 			result = "Wrong domain - Exception: " + e.getMessage();
 			
-			
- 
 		}
 		System.out.println(url + "\t\tStatus Code: " + result);
 		return result;
