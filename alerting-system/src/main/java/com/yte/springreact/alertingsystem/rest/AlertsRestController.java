@@ -3,6 +3,7 @@ package com.yte.springreact.alertingsystem.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class AlertsRestController {
 		return theAlerts;
 	}
 	
+    @CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/alerts")
 	public Alerts addAlerts(@RequestBody Alerts theAlerts) {
 		
