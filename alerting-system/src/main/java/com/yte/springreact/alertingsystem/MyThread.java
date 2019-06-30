@@ -35,7 +35,7 @@ class MyThread implements Runnable {
 			 getStatus(alerts.getUrl(),alerts.getHttp_method());
 		}
 		catch (Exception e) {
-		     System.out.println(name + "Exception");
+		     System.out.println(name + "Thread Exception");
 		}
 		 
 		System.out.println(name + " exiting.\n");
@@ -50,7 +50,7 @@ class MyThread implements Runnable {
 			URL siteURL = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
 			connection.setRequestMethod(http_method);
-			connection.setConnectTimeout(10);
+			connection.setConnectTimeout(100);
 			connection.connect();
  
 			code = connection.getResponseCode();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yte.springreact.alertingsystem.AlertingSystemApplication;
 import com.yte.springreact.alertingsystem.entity.Alerts;
 import com.yte.springreact.alertingsystem.service.AlertsService;
 
@@ -61,8 +62,12 @@ public class AlertsRestController {
 		
 		alertsService.save(theAlerts);
 		
+		//Uygulama calısırken yeni bir alert gelirse
+		AlertingSystemApplication.newAlert(theAlerts);
+
 		return theAlerts;
 	}
+    
     @CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/alerts")
 	public Alerts updateAlerts(@RequestBody Alerts theAlerts) {

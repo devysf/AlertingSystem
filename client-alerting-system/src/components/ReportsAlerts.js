@@ -10,7 +10,8 @@ export default class ReportsAlerts extends Component {
     super();
 
     this.state = {
-     alert : {}
+     alert : {},
+     result:[1,1,1,1,1,1]
     };
   }
   componentDidMount(){
@@ -19,18 +20,18 @@ export default class ReportsAlerts extends Component {
     axios
       .get(`http://localhost:8080/api/alerts/${id}`)
       .then(res => {
-          this.setState({alert : res.data})
+          this.setState({alert : res.data});
+          
+          var temp = res.data.result.split(",");
+          this.setState({result: temp});
         })
-        
   }
 
   render() {
-    var {name,result} = this.state.alert;
-    result = "1,1,1,1,1,1";
-    result = result.split(",");
+    var {name} = this.state.alert;
+    var {result} = this.state;
+    
 
-
-    console.log("Result  "  + result[0]);
     return (
       <div>
         <h1>{name}</h1>

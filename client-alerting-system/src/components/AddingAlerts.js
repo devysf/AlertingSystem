@@ -29,7 +29,7 @@ export default class AddingAlerts extends Component {
       url : this.state.url,
       http_method : this.state.http_method,
       period : this.state.period,
-      result:"000000"
+      result:"0,0,0,0,0,0"
     }
     axios
     .post("http://localhost:8080/api/alerts",newAlerts)

@@ -6,8 +6,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import com.yte.springreact.alertingsystem.entity.Alerts;
 import com.yte.springreact.alertingsystem.service.AlertsService;
@@ -24,11 +26,13 @@ public class AlertingSystemApplication {
 	}
 	
 	public static void main(String[] args) throws Exception{
-		SpringApplication.run(AlertingSystemApplication.class, args);
 		
+		SpringApplication.run(AlertingSystemApplication.class, args);		
 		
-		System.out.println("in main ");
-		
+		System.out.println("---------------------in main -------------------------------------------");
+		System.out.println("---------------------in main -------------------------------------------");
+		System.out.println("---------------------in main -------------------------------------------");
+
 		System.out.println(alertsService.findAll());
 		
 		List<Alerts> listOfAlerts = alertsService.findAll();
@@ -43,6 +47,14 @@ public class AlertingSystemApplication {
 		}
 	
 	}
+	
+	 public static void newAlert(Alerts alerts) {
+		 MyThread th = new MyThread(alertsService,alerts);
+			
+		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();	    
+		
+		service.scheduleAtFixedRate(th, 0, alerts.getPeriod(), TimeUnit.MILLISECONDS);
+    }
 	
 	
 
