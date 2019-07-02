@@ -1,13 +1,23 @@
 package com.yte.springreact.alertingsystem.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
+
+@Entity(name = "Alerts")
 @Table(name="alerts")
 public class Alerts {
 
@@ -18,29 +28,43 @@ public class Alerts {
 	
 	@Column(name="name")
 	private String name;
-	
+
 	@Column(name="url")
 	private String url;
 	
 	@Column(name="http_method")
 	private String http_method;
-	
+
 	@Column(name="period")
 	private int period;
-	
+
 	@Column(name="result")
 	private String result;
-	
+	 
+	 @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	 @JoinColumn(name = "alerts_id")
+	 private List<Results> results;
+	 
 	public Alerts() {
-		
+		this.results = new ArrayList<Results>();
+
 	}
 			
+	public List<Results> getResults() {
+		return results;
+	}
+
+	public void setResults(List<Results> results) {
+		this.results = results;
+	}
+
 	public Alerts(String name, String url, String http_method, int period, String result) {
 		this.name = name;
 		this.url = url;
 		this.http_method = http_method;
 		this.period = period;
 		this.result = result;
+		this.results = new ArrayList<Results>();
 	}
 
 	public int getId() {

@@ -15,6 +15,8 @@ export default class AddingAlerts extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onClick = this.onClick.bind(this);
+
   }
 
   onChange(e) {
@@ -49,6 +51,14 @@ export default class AddingAlerts extends Component {
 
   }
 
+  onClick(e){
+    if(e.target.name == "http")
+      this.setState({url : "http://"})
+    else
+      this.setState({url : "https://"})
+
+  }
+
   render() {
     return (
       <div>
@@ -71,9 +81,17 @@ export default class AddingAlerts extends Component {
                 </div>
 
                 <div className="form-group">
+
                     <label htmlFor="url">
                         URL:
                     </label>
+                    <br></br>
+                    <div className="btn-group"  role="group" aria-label="Basic   example">
+                      <button onClick={this.onClick} name="http" type="button" className="btn btn-secondary">http://</button>
+                      <button onClick={this.onClick} name="https" type="button" className="btn btn-secondary">https://</button>
+                      
+                    </div>
+
                     <input 
                       type="name"
                       className="form-control"

@@ -5,20 +5,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import com.yte.springreact.alertingsystem.entity.Alerts;
+import com.yte.springreact.alertingsystem.entity.Results;
 import com.yte.springreact.alertingsystem.service.AlertsService;
+import com.yte.springreact.alertingsystem.service.ResultsService;
 
 class MyThread implements Runnable {
 	Alerts alerts;
 	String name;
 	Thread t;
-		
+			
 	private static AlertsService alertsService;
-	
+	private static ResultsService resultsService;
+
 	@Autowired
-	public MyThread(AlertsService theAlertsService, Alerts theAlerts) {
+	public MyThread(AlertsService theAlertsService,ResultsService theResultsService, Alerts theAlerts) {
 		alertsService = theAlertsService;
+		resultsService = theResultsService;
 		
 		alerts = theAlerts;
 		name = alerts.getName();
@@ -26,7 +35,6 @@ class MyThread implements Runnable {
 		t = new Thread(this, name);
 		System.out.println("New thread: " + t);
 	}
-	
 	
 	public void run() {
 		System.out.println("\n" + name + " entering.");
@@ -50,7 +58,7 @@ class MyThread implements Runnable {
 			URL siteURL = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
 			connection.setRequestMethod(http_method);
-			connection.setConnectTimeout(100);
+			connection.setConnectTimeout(1000);
 			connection.connect();
  
 			code = connection.getResponseCode();
@@ -62,11 +70,17 @@ class MyThread implements Runnable {
 				alertsResult = alertsResult.substring(2, 11);
 					
 				alertsResult+=",1"; 
-
+				
 				alerts.setResult(alertsResult);
 				
+				//add results to the Alerts 
+				Results results = new Results(1);
+				resultsService.save(results);
+
+				alerts.getResults().add(results);
+		
 				alertsService.save(alerts);
-				
+								
 				System.out.println("Alerts result : "+ alertsResult);
 
 				
@@ -82,7 +96,15 @@ class MyThread implements Runnable {
 				
 				alerts.setResult(alertsResult);
 				
+				
+				//add results to the Alerts 
+				Results results = new Results(0);
+				resultsService.save(results);
+
+				alerts.getResults().add(results);
+		
 				alertsService.save(alerts);
+				
 				
 				System.out.println("Alerts result : "+ alertsResult);
 
@@ -98,8 +120,14 @@ class MyThread implements Runnable {
 			
 			alerts.setResult(alertsResult);
 			
+			//add results to the Alerts 
+			Results results = new Results(0);
+			resultsService.save(results);
+
+			alerts.getResults().add(results);
+	
 			alertsService.save(alerts);
-			
+						
 			System.out.println("Alerts result : "+ alertsResult);
 			
 			result = "Wrong domain - Exception: " + e.getMessage();

@@ -11,7 +11,8 @@ export default class ReportsAlerts extends Component {
 
     this.state = {
      alert : {},
-     result:[1,1,1,1,1,1]
+     result:[1,1,1,1,1,1],
+     tableResult:[1,1,1,1,1,1]
     };
   }
   componentDidMount(){
@@ -24,18 +25,27 @@ export default class ReportsAlerts extends Component {
           
           var temp = res.data.result.split(",");
           this.setState({result: temp});
+
+          var length = res.data.results.length;
+          var sliced = res.data.results.slice(length-6, length).map(res=>{return res.status});
+          
+          this.setState({tableResult : sliced});
+
+          console.log("table Result");
+          console.log(this.state.tableResult);
+
         })
   }
 
   render() {
     var {name} = this.state.alert;
-    var {result} = this.state;
-    
+    var {result,tableResult} = this.state;
+  
 
     return (
       <div>
         <h1>{name}</h1>
-        <h2>{result}</h2>
+        <h2>{tableResult}</h2>
 
         <XYPlot
                     xType="ordinal"
@@ -48,12 +58,12 @@ export default class ReportsAlerts extends Component {
                 <YAxis />
                 <LineSeries
                     data={[
-                        {x: 1, y: result[0] },
-                        {x: 2, y: result[1] },
-                        {x: 3, y: result[2] },
-                        {x: 4, y: result[3]},
-                        {x: 5, y: result[4]},
-                        {x: 6, y: result[5]}
+                        {x: 1, y: tableResult[0]},
+                        {x: 2, y: tableResult[1] },
+                        {x: 3, y: tableResult[2] },
+                        {x: 4, y: tableResult[3]},
+                        {x: 5, y: tableResult[4]},
+                        {x: 6, y: tableResult[5]}
                     ]}/>
             </XYPlot>
       </div>
