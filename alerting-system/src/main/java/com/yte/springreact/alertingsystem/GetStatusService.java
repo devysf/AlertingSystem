@@ -5,49 +5,26 @@ import com.yte.springreact.alertingsystem.entity.Results;
 import com.yte.springreact.alertingsystem.service.AlertsService;
 import com.yte.springreact.alertingsystem.service.ResultsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 @Service
-public class ScheduledService {
-    private static int period=0;
+public class GetStatusService {
 
     private static AlertsService alertsService;
     private static ResultsService resultsService;
 
-
     @Autowired
-    public ScheduledService(AlertsService theAlertsService,ResultsService theResultsService) {
+    public GetStatusService(AlertsService theAlertsService, ResultsService theResultsService) {
         alertsService = theAlertsService;
         resultsService = theResultsService;
 
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void runProgram(){
-        List<Alerts> listOfAlerts = alertsService.findAll();
-
-        period+=1000;
-        System.out.println("Period: " + period);
-
-        for (Alerts alerts : listOfAlerts){
-            if(period % alerts.getPeriod() != 0 )
-                continue;
-
-            System.out.println("\n" + alerts.getName() + " entering.");
-
-            getStatus(alerts);
-
-            System.out.println(alerts.getName() + " exiting.\n");
-        }
-
-    }
-
-
+    @Async
     public void getStatus(Alerts alert)  {
 
         String result = "";
