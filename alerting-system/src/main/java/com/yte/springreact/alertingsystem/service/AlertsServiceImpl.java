@@ -13,49 +13,48 @@ import com.yte.springreact.alertingsystem.repository.AlertsRepository;
 
 @Service
 public class AlertsServiceImpl implements AlertsService{
-	
-	
-	private AlertsRepository alertsRepository;
-	
-	@Autowired
-	public AlertsServiceImpl(AlertsRepository theAlertsRepository) {
-		alertsRepository = theAlertsRepository;
-	}
 
 
-	@Override
-	public List<Alerts> findAll() {
-		return alertsRepository.findAll();
-	}
+    private AlertsRepository alertsRepository;
+
+    @Autowired
+    public AlertsServiceImpl(AlertsRepository theAlertsRepository) {
+        alertsRepository = theAlertsRepository;
+    }
 
 
-	@Override
-	public Alerts findById(int alertsId) {
-		Optional<Alerts> result = alertsRepository.findById(alertsId);
-		
-		Alerts theAlerts = null;
-		
-		if(result.isPresent()) {
-			theAlerts = result.get();
-		}
-		else {
-			throw new RuntimeException("Did not find Alerts id - " + alertsId);
-
-		}
-		return theAlerts;
-	}
+    @Override
+    public List<Alerts> findAll() {
+        return alertsRepository.findAll();
+    }
 
 
-	@Override
-	public void save(Alerts theAlerts) {
-		alertsRepository.save(theAlerts);
-	}
+    @Override
+    public Alerts findById(int alertsId) {
+        Optional<Alerts> result = alertsRepository.findById(alertsId);
+
+        Alerts theAlerts = null;
+
+        if (result.isPresent()) {
+            theAlerts = result.get();
+        } else {
+            throw new RuntimeException("Did not find Alerts id - " + alertsId);
+
+        }
+        return theAlerts;
+    }
 
 
-	@Override
-	public void deleteById(int alertsId) {
-		alertsRepository.deleteById(alertsId);
-	}
-	
-	
+    @Override
+    public Alerts save(Alerts theAlerts) {
+        return alertsRepository.save(theAlerts);
+    }
+
+
+    @Override
+    public void deleteById(int alertsId) {
+        alertsRepository.deleteById(alertsId);
+    }
+
+
 }

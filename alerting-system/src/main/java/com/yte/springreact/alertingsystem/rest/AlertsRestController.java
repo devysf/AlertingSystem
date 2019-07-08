@@ -63,7 +63,7 @@ public class AlertsRestController {
 		alertsService.save(theAlerts);
 		
 		//Uygulama calısırken yeni bir alert gelirse
-		AlertingSystemApplication.newAlert(theAlerts);
+		//AlertingSystemApplication.newAlert(theAlerts);
 
 		return theAlerts;
 	}

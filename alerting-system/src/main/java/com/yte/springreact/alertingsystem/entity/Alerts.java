@@ -58,6 +58,14 @@ public class Alerts {
 		this.results = results;
 	}
 
+	public Alerts(String name, String url, String http_method) {
+		this.name = name;
+		this.url = url;
+		this.http_method = http_method;
+
+		this.results = new ArrayList<Results>();
+	}
+
 	public Alerts(String name, String url, String http_method, int period, String result) {
 		this.name = name;
 		this.url = url;

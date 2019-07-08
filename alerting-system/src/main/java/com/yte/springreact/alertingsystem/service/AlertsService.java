@@ -10,7 +10,7 @@ public interface AlertsService {
 
 	public Alerts findById(int alertsId);
 
-	public void save(Alerts theAlerts);
+	public Alerts save(Alerts theAlerts);
 
 	public void deleteById(int alertsId);
 

@@ -26,13 +26,11 @@ export default class ReportsAlerts extends Component {
           var temp = res.data.result.split(",");
           this.setState({result: temp});
 
+          //another aproach to show alert status 
           var length = res.data.results.length;
           var sliced = res.data.results.slice(length-6, length).map(res=>{return res.status});
           
           this.setState({tableResult : sliced});
-
-          console.log("table Result");
-          console.log(this.state.tableResult);
 
         })
   }
