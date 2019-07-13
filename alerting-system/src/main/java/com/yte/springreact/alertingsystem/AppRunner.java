@@ -2,7 +2,7 @@ package com.yte.springreact.alertingsystem;
 
 import com.yte.springreact.alertingsystem.entity.Alerts;
 import com.yte.springreact.alertingsystem.service.AlertsService;
-import com.yte.springreact.alertingsystem.service.ResultsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,13 +15,11 @@ public class AppRunner implements CommandLineRunner {
     private static int period=0;
 
     private static AlertsService alertsService;
-    private static ResultsService resultsService;
     private static GetStatusService getStatusService;
 
     @Autowired
-    public AppRunner(AlertsService theAlertsService, ResultsService theResultsService,GetStatusService theGetStatusService) {
+    public AppRunner(AlertsService theAlertsService, GetStatusService theGetStatusService) {
         alertsService = theAlertsService;
-        resultsService = theResultsService;
         getStatusService = theGetStatusService;
     }
 
