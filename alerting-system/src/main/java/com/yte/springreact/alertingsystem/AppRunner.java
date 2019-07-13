@@ -34,17 +34,17 @@ public class AppRunner implements CommandLineRunner {
 
         List<Alerts> listOfAlerts = alertsService.findAll();
 
-        System.out.println("Period: " + period);
+        //System.out.println("Period: " + period);
 
         for (Alerts alerts : listOfAlerts){
             if(period % alerts.getPeriod() != 0 )
                 continue;
 
-            System.out.println("\n" + alerts.getName() + " entering.");
+            //System.out.println("\n" + alerts.getName() + " entering.");
 
             getStatusService.getStatus(alerts);
 
-            System.out.println(alerts.getName() + " exiting.\n");
+            //System.out.println(alerts.getName() + " exiting.\n");
         }
     }
 

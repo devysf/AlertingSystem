@@ -71,6 +71,6 @@ public class GetStatusService {
             result = "Wrong domain - Exception: " + e.getMessage();
 
         }
-        System.out.println(alert.getUrl() + "\t\tStatus Code: " + result);
+       // System.out.println(alert.getUrl() + "\t\tStatus Code: " + result);
     }
 }
