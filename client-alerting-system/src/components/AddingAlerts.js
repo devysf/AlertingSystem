@@ -19,6 +19,17 @@ export default class AddingAlerts extends Component {
 
   }
 
+  componentDidMount(){
+    axios
+    .get("http://localhost:8080/auth")
+    .then(res => {
+      console.log(res);
+      if(res.data === "anonymousUser"){
+        this.props.history.push("/login");      
+      }
+    });
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }

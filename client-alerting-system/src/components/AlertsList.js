@@ -16,6 +16,16 @@ export default class AlertsList extends Component {
   }
 
   componentDidMount(){
+
+    axios
+    .get("http://localhost:8080/auth")
+    .then(res => {
+      console.log(res);
+      if(res.data === "anonymousUser"){
+        this.props.history.push("/login");      
+      }
+    });
+    
     axios
       .get("http://localhost:8080/api/alerts")
       .then(res => {

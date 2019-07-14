@@ -16,6 +16,17 @@ export default class ReportsAlerts extends Component {
     };
   }
   componentDidMount(){
+
+    axios
+    .get("http://localhost:8080/auth")
+    .then(res => {
+      console.log(res);
+      if(res.data === "anonymousUser"){
+        this.props.history.push("/login");      
+      }
+    });
+
+    
     const { id } = this.props.match.params
 
     axios
