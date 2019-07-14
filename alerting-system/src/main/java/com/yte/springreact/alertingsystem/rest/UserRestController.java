@@ -50,6 +50,7 @@ public class UserRestController {
     @PostMapping("/login")
     public  List<ObjectError> login(@RequestBody User userForm, BindingResult bindingResult) {
 
+        System.out.println("User form  : " + userForm.getUsername() + "---" + userForm.getPassword());
         loginValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -61,5 +62,9 @@ public class UserRestController {
         return  bindingResult.getAllErrors();
     }
 
+    @GetMapping("/auth")
+    public  String auth() {
+           return  securityService.findLoggedInUsername();
+    }
 
 }
