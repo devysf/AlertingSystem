@@ -2,7 +2,6 @@ package com.yte.springreact.alertingsystem.validator;
 
 
 import com.yte.springreact.alertingsystem.entity.auth.User;
-import com.yte.springreact.alertingsystem.service.auth.SecurityService;
 import com.yte.springreact.alertingsystem.service.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,9 +13,6 @@ import org.springframework.validation.Validator;
 public class LoginValidator implements Validator {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private SecurityService securityService;
 
     @Override
     public boolean supports(Class<?> aClass) {
