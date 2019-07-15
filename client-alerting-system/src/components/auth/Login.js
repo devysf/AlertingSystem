@@ -15,32 +15,6 @@ export default class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-
-    axios
-    .get("http://localhost:8080/auth")
-    .then(res => {
-      console.log(res);
-      if(res.data !== "anonymousUser"){
-        this.props.history.push("/");      
-      }
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-
-    /*
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
-
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-
-    */
-  }
-
   onSubmit(e) {
     e.preventDefault();
 
@@ -50,14 +24,38 @@ export default class Login extends Component {
     };
     console.log(userData);
     axios
-      .post("http://localhost:8080/login",userData)
+      .post("http://localhost:8080/authenticate",userData)
       .then(res => {
         console.log("Login then")
-        console.log(res.data.token);
+        console.log(res);
+        if(!res.data.usernameError || !res.data.passwordError){
+          sessionStorage.setItem("jwtToken", 'Bearer ' + res.data);
+
+          axios.interceptors.request.use(
+            (config) => {
+                config.headers.authorization =  res.data
+                return config
+            }
+          )
+            
+          this.props.history.push("/lists");
+        }
+        this.setState({errors : res.data});
+        
+
       })
       .catch(error => {
         console.log("Login error")
         console.log(error.response)
+
+        if(error.response.data == "INVALID_CREDENTIALS")
+        {
+          console.log("Invalid Credi")
+          var errors = {
+            usernameError : "Username or Password are incorrect.2"
+          }
+          this.setState({errors : errors});
+        }
     });
 
   }
@@ -86,8 +84,9 @@ export default class Login extends Component {
                       name="username"
                       value={this.state.username}
                       onChange={this.onChange}
-                      error={errors.username}
                     />
+                    
+                   {errors.usernameError && <div className="text-danger">{errors.usernameError}</div>}
                 </div>
                 <div className="form-group">
                   <input
@@ -99,6 +98,7 @@ export default class Login extends Component {
                     onChange={this.onChange}
                     error={errors.password}
                   />
+                  {errors.passwordError && <div className="text-danger">{errors.passwordError}</div>}
                 </div>
 
                 <input type="submit" className="btn btn-info btn-block mt-4" />

@@ -8,9 +8,8 @@ export default class Register extends Component {
 
     this.state = {
       username: '',
-      email: '',
       password: '',
-      password2: '',
+      passwordConfirm: '',
       errors: {}
     };
 
@@ -18,18 +17,7 @@ export default class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    axios
-    .get("http://localhost:8080/auth")
-    .then(res => {
-      console.log(res);
-      if(res.data !== "anonymousUser"){
-        this.props.history.push("/");      
-      }
-    });
-
-   
-  }
+ 
 
   componentWillReceiveProps(nextProps) {
 
@@ -48,26 +36,31 @@ export default class Register extends Component {
     e.preventDefault();
 
     const newUser = {
-      name: this.state.name,
-      email: this.state.email,
+      username: this.state.username,
       password: this.state.password,
-      password2: this.state.password2
+      passwordConfirm: this.state.passwordConfirm
     };
+  
     
     axios
-      .post("http://localhost:8080/login",newUser)
-      .then(res => {
-        console.log("Login Process")
-        console.log(res);
-      })
-    /*
-    this.props.registerUser(newUser, this.props.history);
-    */
+    .post("http://localhost:8080/register",newUser)
+    .then(res => {
+      console.log("Login then")
+      console.log(res);
+      if(res.data==="success")
+        this.props.history.push("/lists");
+      this.setState({errors : res.data});
+
+      console.log("axios")
+      console.log(res.data);
+
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
-    const { errors } = this.state;
-
+    var  errors = this.state.errors;
+   
     return (
       <div className="register">
         <div className="container">
@@ -86,21 +79,11 @@ export default class Register extends Component {
                     name="username"
                     value={this.state.username}
                     onChange={this.onChange}
-                    error={errors.username}
                   />
+
+                   {errors.usernameError && <div className="text-danger">{errors.usernameError}</div>}
                 </div>
-                <div className="form-group">
-                  <input
-                   className={'form-control form-control-lg'}
-                    placeholder="Email"
-                    name="email"
-                    type="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
-                    error={errors.email}
-                    info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
-                  />
-                </div>
+          
 
                 <div className="form-group">
                   <input
@@ -110,20 +93,23 @@ export default class Register extends Component {
                     type="password"
                     value={this.state.password}
                     onChange={this.onChange}
-                    error={errors.password}
                   />
+
+                  {errors.passwordError && <div className="text-danger">{errors.passwordError}</div>}
                 </div>
               
                 <div className="form-group">
                   <input
                    className={'form-control form-control-lg'}
                     placeholder="Confirm Password"
-                    name="password2"
+                    name="passwordConfirm"
                     type="password"
-                    value={this.state.password2}
+                    value={this.state.passwordConfirm}
                     onChange={this.onChange}
-                    error={errors.password2}
                   />
+                  
+                  {errors.passwordConfirmError && <div className="text-danger">{errors.passwordConfirmError}</div>}
+
                 </div>
                
                 <input type="submit" className="btn btn-info btn-block mt-4" />

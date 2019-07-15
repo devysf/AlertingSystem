@@ -16,24 +16,27 @@ export default class AlertsList extends Component {
   }
 
   componentDidMount(){
-
-    axios
-    .get("http://localhost:8080/auth")
-    .then(res => {
-      console.log(res);
-      if(res.data === "anonymousUser"){
-        this.props.history.push("/login");      
+    axios.interceptors.request.use(
+      (config) => {
+        
+            config.headers.authorization =  sessionStorage.getItem("jwtToken");
+          
+          return config
       }
-    });
-    
+    )
+
     axios
       .get("http://localhost:8080/api/alerts")
       .then(res => {
+          console.log("ress");
           console.log( res.data);
           this.setState({alerts : res.data});
         })
+        .catch(err=> {
+          console.log("err");
+          console.log(err);          
+        });
         
-    console.log(this.state.alerts);
   }
 
   render() {
@@ -43,7 +46,7 @@ export default class AlertsList extends Component {
         <h1 className="display-4 mb-2">
            Alerts List
         </h1>
-        <table class="table table-hover">
+        <table className="table table-hover">
             <thead>
               <tr>
                 <th scope="col">Name</th>
