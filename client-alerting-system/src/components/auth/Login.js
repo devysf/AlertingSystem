@@ -45,7 +45,7 @@ export default class Login extends Component {
       .then(res => {
         console.log("Login then")
         console.log(res);
-        if(!res.data.usernameError || !res.data.passwordError){
+        if(!res.data.usernameError &&!res.data.passwordError){
           localStorage.setItem("jwtToken", res.data);            
         }
         this.setState({errors : res.data});
