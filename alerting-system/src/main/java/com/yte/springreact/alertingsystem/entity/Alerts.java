@@ -1,20 +1,10 @@
 package com.yte.springreact.alertingsystem.entity;
 
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity(name = "Alerts")
@@ -38,18 +28,26 @@ public class Alerts {
 	@Column(name="period")
 	private int period;
 
-	@Column(name="result")
-	private String result;
+	@Column(name="createdBy")
+	private String createdBy;
 	 
-	 @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	 @JoinColumn(name = "alerts_id")
-	 private List<Results> results;
-	 
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name = "alerts_id")
+	private List<Results> results;
+
 	public Alerts() {
 		this.results = new ArrayList<Results>();
 
 	}
-			
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	public List<Results> getResults() {
 		return results;
 	}
@@ -66,12 +64,11 @@ public class Alerts {
 		this.results = new ArrayList<Results>();
 	}
 
-	public Alerts(String name, String url, String http_method, int period, String result) {
+	public Alerts(String name, String url, String http_method, int period) {
 		this.name = name;
 		this.url = url;
 		this.http_method = http_method;
 		this.period = period;
-		this.result = result;
 		this.results = new ArrayList<Results>();
 	}
 
@@ -135,20 +132,12 @@ public class Alerts {
 
 
 
-	public String getResult() {
-		return result;
-	}
 
-
-
-	public void setResult(String result) {
-		this.result = result;
-	}
 
 	@Override
 	public String toString() {
 		return "Alerts [id=" + id + ", name=" + name + ", url=" + url + ", http_method=" + http_method + ", period="
-				+ period + ", result=" + result + "]";
+				+ period + "]";
 	}
 	
 	

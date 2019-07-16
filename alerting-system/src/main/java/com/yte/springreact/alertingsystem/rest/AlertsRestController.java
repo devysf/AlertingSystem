@@ -2,30 +2,28 @@ package com.yte.springreact.alertingsystem.rest;
 
 import java.util.List;
 
+import com.yte.springreact.alertingsystem.entity.auth.User;
+import com.yte.springreact.alertingsystem.service.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.yte.springreact.alertingsystem.AlertingSystemApplication;
 import com.yte.springreact.alertingsystem.entity.Alerts;
 import com.yte.springreact.alertingsystem.service.AlertsService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
 public class AlertsRestController {
 			
 	private AlertsService alertsService;
-	
+	private UserService userService;
+
 	@Autowired
-	public AlertsRestController(AlertsService theAlertsService) {
+	public AlertsRestController(AlertsService theAlertsService,UserService theUserService) {
 		alertsService = theAlertsService;
+		userService = theUserService;
 	}
 	
 	@GetMapping("/hello")
@@ -53,19 +51,24 @@ public class AlertsRestController {
 	
     @CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/alerts")
-	public Alerts addAlerts(@RequestBody Alerts theAlerts) {
+	public User addAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
 		
 		// also just in case they pass an id in JSON ... set id to 0
 		// this is to force a save of new item ... instead of update
 				
 		theAlerts.setId(0);
-		
-		alertsService.save(theAlerts);
-		
-		//Uygulama calısırken yeni bir alert gelirse
-		//AlertingSystemApplication.newAlert(theAlerts);
+		System.out.println("Adding alerts");
+		System.out.println(request.getUserPrincipal().getName());
+		User foundUser = userService.findByUsername(request.getUserPrincipal().getName());
+		System.out.println("Id --> " + foundUser.getId());
 
-		return theAlerts;
+		theAlerts.setCreatedBy(foundUser.getUsername());
+		Alerts savedAlerts = alertsService.save(theAlerts);
+		foundUser.getAlerts().add(savedAlerts);
+
+		userService.save(foundUser);
+
+		return foundUser;
 	}
     
     @CrossOrigin(origins = "http://localhost:3000")

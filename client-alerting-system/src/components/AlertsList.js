@@ -53,6 +53,7 @@ export default class AlertsList extends Component {
                 <th scope="col">URL</th>
                 <th scope="col">Http Method</th>
                 <th scope="col">Control Period</th>
+                <th scope="col">Created By</th>
 
               </tr>
             </thead>

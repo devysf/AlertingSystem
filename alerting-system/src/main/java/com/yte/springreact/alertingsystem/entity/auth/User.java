@@ -1,6 +1,8 @@
 package com.yte.springreact.alertingsystem.entity.auth;
 
 
+import com.yte.springreact.alertingsystem.entity.Alerts;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +21,20 @@ public class User {
     @Transient
     private String passwordConfirm;
 
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private Set<Alerts> alerts =new HashSet<>();
+
     @ManyToMany
     private Set<Role> roles = new HashSet<>();
+
+    public Set<Alerts> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(Set<Alerts> alerts) {
+        this.alerts = alerts;
+    }
 
     public Long getId() {
         return id;

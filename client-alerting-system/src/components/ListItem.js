@@ -13,7 +13,9 @@ export default class ListItem extends Component {
   }
 
   render() {
-    const { id, name, url, http_method, period } = this.props.alert;
+    console.log("List item Component")
+    console.log(this.props.alert);
+    const { id, name, url, http_method, period,createdBy } = this.props.alert;
 
     
     return (
@@ -23,6 +25,8 @@ export default class ListItem extends Component {
           <td>{url}</td>
           <td>{http_method}</td>
           <td>{period}</td>
+          <td>{createdBy}</td>
+
         </tr>    
     );
   }
