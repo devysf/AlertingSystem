@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axiosApi from "../axios-config/axios";
 
 export default class AddingAlerts extends Component {
 
@@ -33,11 +33,12 @@ export default class AddingAlerts extends Component {
       period : this.state.period,
       result:"0,0,0,0,0,0"
     }
-    axios
+    axiosApi
     .post("http://localhost:8080/api/alerts",newAlerts)
     .then(res => {
         console.log("axios post adding alerts");
     })
+    .catch(err=> {console.log("errroor " + err )})
     
     console.log(newAlerts);
 

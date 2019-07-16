@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import axios from "axios";
+import axiosApi from "../../axios-config/axios";
 
 export default class Login extends Component {
   constructor() {
@@ -29,14 +30,7 @@ export default class Login extends Component {
         console.log("Login then")
         console.log(res);
         if(!res.data.usernameError || !res.data.passwordError){
-          sessionStorage.setItem("jwtToken", 'Bearer ' + res.data);
-
-          axios.interceptors.request.use(
-            (config) => {
-                config.headers.authorization =  res.data
-                return config
-            }
-          )
+          sessionStorage.setItem("jwtToken", res.data);
             
           this.props.history.push("/lists");
         }

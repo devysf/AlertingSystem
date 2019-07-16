@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
+
+import axiosApi from "../axios-config/axios"
 
 import ListItem from "./ListItem";
 
@@ -16,26 +17,20 @@ export default class AlertsList extends Component {
   }
 
   componentDidMount(){
-    axios.interceptors.request.use(
-      (config) => {
-        
-            config.headers.authorization =  sessionStorage.getItem("jwtToken");
-          
-          return config
-      }
-    )
+   
+    console.log("Token" + sessionStorage.getItem("jwtToken"));
 
-    axios
-      .get("http://localhost:8080/api/alerts")
-      .then(res => {
-          console.log("ress");
-          console.log( res.data);
-          this.setState({alerts : res.data});
-        })
-        .catch(err=> {
-          console.log("err");
-          console.log(err);          
-        });
+    axiosApi
+    .get("http://localhost:8080/api/alerts")
+    .then(res => {
+        console.log("ress");
+        console.log( res.data);
+        this.setState({alerts : res.data});
+      })
+      .catch(err=> {
+        console.log("err");
+        console.log(err);          
+      });
         
   }
 
