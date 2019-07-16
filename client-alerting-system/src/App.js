@@ -12,6 +12,22 @@ import AddingAlerts from "./components/AddingAlerts";
 import AlertsList from "./components/AlertsList";
 import ReportsAlerts from "./components/ReportsAlerts";
 
+import jwt_decode from "jwt-decode";
+
+//localStorage.clear();
+if(localStorage.getItem('jwtToken')){
+  const token = localStorage.getItem("jwtToken");
+  const decoded = jwt_decode(token);
+
+  console.log("Decoded ")
+  console.log(decoded);
+
+  // Check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    window.location.href("login");
+  }
+}
 
 function App() {
   return (

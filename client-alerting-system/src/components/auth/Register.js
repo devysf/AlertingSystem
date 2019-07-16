@@ -17,15 +17,10 @@ export default class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
- 
-
-  componentWillReceiveProps(nextProps) {
-
-    /*
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+  componentDidMount() {
+    if (localStorage.getItem("jwtToken")) {
+      this.props.history.push('/login');
     }
-    */
   }
 
   onChange(e) {

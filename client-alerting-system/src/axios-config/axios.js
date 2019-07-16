@@ -9,6 +9,5 @@ export const setAuthHeader = (token) => {
 }
 
 // Set the initial header from storage or something (should surround with try catch in actual app)
-setAuthHeader(sessionStorage.getItem('jwtToken'));
-
+setAuthHeader(localStorage.getItem('jwtToken'));
 export default axiosApi;

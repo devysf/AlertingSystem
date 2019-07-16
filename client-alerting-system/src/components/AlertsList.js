@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 
 import axiosApi from "../axios-config/axios"
+import setAuthHeader from "../axios-config/axios"
 
 import ListItem from "./ListItem";
 
 
 export default class AlertsList extends Component {
+  
   constructor() {
     super();
 
@@ -17,9 +19,11 @@ export default class AlertsList extends Component {
   }
 
   componentDidMount(){
-   
-    console.log("Token" + sessionStorage.getItem("jwtToken"));
-
+    if (!localStorage.getItem("jwtToken")) {
+      this.props.history.push('/login');
+    }
+    
+    console.log("Token ---> " + localStorage.getItem("jwtToken"));   
     axiosApi
     .get("http://localhost:8080/api/alerts")
     .then(res => {
@@ -31,8 +35,9 @@ export default class AlertsList extends Component {
         console.log("err");
         console.log(err);          
       });
-        
   }
+
+
 
   render() {
 

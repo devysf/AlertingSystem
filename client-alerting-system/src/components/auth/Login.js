@@ -16,6 +16,22 @@ export default class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount(){
+     
+    if (localStorage.getItem("jwtToken")) {
+     // this.props.history.push('/lists');
+     window.location.href = '/lists';
+    }
+  }
+  componentDidUpdate() {
+    
+    if (localStorage.getItem("jwtToken")) {
+      //this.props.history.push('/lists');
+      window.location.href = '/lists';
+
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -30,9 +46,7 @@ export default class Login extends Component {
         console.log("Login then")
         console.log(res);
         if(!res.data.usernameError || !res.data.passwordError){
-          sessionStorage.setItem("jwtToken", res.data);
-            
-          this.props.history.push("/lists");
+          localStorage.setItem("jwtToken", res.data);            
         }
         this.setState({errors : res.data});
         
@@ -42,7 +56,7 @@ export default class Login extends Component {
         console.log("Login error")
         console.log(error.response)
 
-        if(error.response.data == "INVALID_CREDENTIALS")
+        if(error.response && error.response.data == "INVALID_CREDENTIALS")
         {
           console.log("Invalid Credi")
           var errors = {

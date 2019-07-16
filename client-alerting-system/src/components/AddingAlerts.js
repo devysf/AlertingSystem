@@ -18,6 +18,11 @@ export default class AddingAlerts extends Component {
     this.onClick = this.onClick.bind(this);
 
   }
+  componentDidMount(){
+    if (!localStorage.getItem("jwtToken")) {
+      this.props.history.push('/login');
+    }
+  }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
