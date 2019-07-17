@@ -71,6 +71,7 @@ public class JwtAuthenticationRestController {
       return ResponseEntity.ok(validationError);
     }
 
+    System.out.println("Register" + user.getId());
     userService.save(user);
 
     return ResponseEntity.ok("success");

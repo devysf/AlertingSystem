@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axiosApi from "../axios-config/axios";
+import jwt_decode from "jwt-decode";
 
 export default class AddingAlerts extends Component {
 
@@ -35,9 +36,8 @@ export default class AddingAlerts extends Component {
       name: this.state.name,
       url : this.state.url,
       http_method : this.state.http_method,
-      period : this.state.period,
-      result:"0,0,0,0,0,0"
-    }
+      period : this.state.period
+            }
     axiosApi
     .post("http://localhost:8080/api/alerts",newAlerts)
     .then(res => {

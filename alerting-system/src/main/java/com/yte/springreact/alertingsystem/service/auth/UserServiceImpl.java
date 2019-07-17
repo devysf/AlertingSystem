@@ -25,15 +25,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        System.out.println("Save user" + user.getId());
+        //Control get id because of updating
+        if(user.getId() == null){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        //add normal user role to new user
-        Role role = new Role();
-        role.setId(1L);
-        role.setName("NORMAL");
-        roleRepository.save(role);
+            //add normal user role to new user
+            Role role = new Role();
+            role.setId(1L);
+            role.setName("NORMAL");
+            roleRepository.save(role);
 
-        user.getRoles().add(role);
+            user.getRoles().add(role);
+        }
+
         userRepository.save(user);
     }
 

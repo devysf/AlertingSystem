@@ -66,6 +66,7 @@ public class AlertsRestController {
 		Alerts savedAlerts = alertsService.save(theAlerts);
 		foundUser.getAlerts().add(savedAlerts);
 
+
 		userService.save(foundUser);
 
 		return foundUser;
