@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @Service
 public class GetStatusService {
@@ -42,6 +46,14 @@ public class GetStatusService {
 
                 //add results to the Alerts
                 Results results = new Results(1);
+
+                //Add date in results
+                Calendar cal = Calendar.getInstance();
+                Date date=cal.getTime();
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                String formattedDate=dateFormat.format(date);
+
+                results.setDate(formattedDate);
                 resultsService.save(results);
 
                 alert.getResults().add(results);

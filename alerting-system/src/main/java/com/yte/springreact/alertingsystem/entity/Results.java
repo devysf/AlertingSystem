@@ -9,7 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+import java.util.Calendar;
+import java.util.Date;
 @Entity(name = "Results")
 @Table(name="results")
 public class Results {
@@ -23,18 +24,13 @@ public class Results {
 	@Column(name="alerts_id")
 	private int alerts_id; 
 	
-	public int getAlerts_id() {
-		return alerts_id;
-	}
-
-	public void setAlerts_id(int alerts_id) {
-		this.alerts_id = alerts_id;
-	}
-	
 
 	@Column(name="status")
 	private int status;
-	
+
+	@Column(name="date")
+	private String date;
+
 	public Results() {
 		
 	}
@@ -44,7 +40,23 @@ public class Results {
 		this.status = status;
 		//this.alerts_id = alertsId;
 	}
-	
+
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public int getAlerts_id() {
+		return alerts_id;
+	}
+
+	public void setAlerts_id(int alerts_id) {
+		this.alerts_id = alerts_id;
+	}
 
 	public int getStatus() {
 		return status;

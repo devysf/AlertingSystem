@@ -11,7 +11,7 @@ export default class ListItem extends Component {
 
   goReportsPage(){
     console.log(this.props);
-    this.props.history.push(`/lists/${this.props.alert.id}`);
+    this.props.history.push(`/lists/${this.props.alert.id}`,[this.props.alert]);
   }
   onDeleteClick (){
     console.log("Delete button pressed")
