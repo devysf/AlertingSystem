@@ -25,7 +25,6 @@ public class GetStatusService {
     public GetStatusService(AlertsService theAlertsService, ResultsService theResultsService) {
         alertsService = theAlertsService;
         resultsService = theResultsService;
-
     }
 
     @Async
@@ -70,6 +69,7 @@ public class GetStatusService {
                 alert.getResults().add(results);
 
                 alertsService.save(alert);
+
             }
         } catch (Exception e) {
             //add results to the Alerts
