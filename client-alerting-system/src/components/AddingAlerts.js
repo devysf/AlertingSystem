@@ -8,6 +8,8 @@ export default class AddingAlerts extends Component {
     super();
 
     this.state = {
+      isUpdate:"false",
+      id:"",
       name: "",
       url: "",
       http_method: "",
@@ -23,6 +25,23 @@ export default class AddingAlerts extends Component {
     if (!localStorage.getItem("jwtToken")) {
       this.props.history.push('/login');
     }
+
+    
+ 
+    if(this.props.location.state){
+      var alertState = this.props.location.state[0];
+
+     this.setState({
+       isUpdate:true,
+       id:alertState.id,
+       name : alertState.name,
+       url : alertState.url,
+       http_method : alertState.url,
+       period : alertState.period
+     })
+    }
+
+   
   }
 
   onChange(e) {
@@ -32,27 +51,56 @@ export default class AddingAlerts extends Component {
   onSubmit(e){
     e.preventDefault();
 
-    const newAlerts ={
-      name: this.state.name,
-      url : this.state.url,
-      http_method : this.state.http_method,
-      period : this.state.period
-            }
-    axiosApi
-    .post("http://localhost:8080/api/alerts",newAlerts)
-    .then(res => {
-        console.log("axios post adding alerts");
-    })
-    .catch(err=> {console.log("errroor " + err )})
-    
-    console.log(newAlerts);
+    if(this.state.isUpdate == true){
+      console.log("isUpdateTrue");
+      
+      const updateAlerts ={
+        id:this.state.id,
+        name: this.state.name,
+        url : this.state.url,
+        http_method : this.state.http_method,
+        period : this.state.period
+      }
 
-    this.setState({
-      name: "",
-      url: "",
-      http_method: "",
-      period: ""}
-    );
+      axiosApi
+        .put("http://localhost:8080/api/alerts",updateAlerts)
+        .then(res => {
+          console.log("axios put updating alerts")
+          ;
+
+          window.location.href = "lists";
+
+        })
+       .catch(err=> {console.log("errroor " + err )})
+      
+    }else{
+        console.log("isUpdateFalse")
+
+        const newAlerts ={
+          name: this.state.name,
+          url : this.state.url,
+          http_method : this.state.http_method,
+          period : this.state.period
+                }
+        axiosApi
+        .post("http://localhost:8080/api/alerts",newAlerts)
+        .then(res => {
+            console.log("axios post adding alerts");
+            window.location.href = "lists";
+
+        })
+        .catch(err=> {console.log("errroor " + err )})
+        
+        console.log(newAlerts);
+
+        this.setState({
+          name: "",
+          url: "",
+          http_method: "",
+          period: ""}
+        );
+    }
+  
 
 
   }
@@ -66,6 +114,10 @@ export default class AddingAlerts extends Component {
   }
 
   render() {
+
+    console.log("Update");
+    console.log(this.state)
+
     return (
       <div>
         <h1> AddingAlerts </h1>

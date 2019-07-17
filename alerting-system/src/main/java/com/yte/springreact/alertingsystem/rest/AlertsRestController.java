@@ -75,7 +75,15 @@ public class AlertsRestController {
     @CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/alerts")
 	public Alerts updateAlerts(@RequestBody Alerts theAlerts) {
-		alertsService.save(theAlerts);
+		System.out.println("Alerts asdaaaaaaaaaaaaaaaaa" + theAlerts);
+
+		Alerts foundAlerts = alertsService.findById(theAlerts.getId());
+		foundAlerts.setName(theAlerts.getName());
+		foundAlerts.setHttp_method(theAlerts.getHttp_method());
+		foundAlerts.setPeriod(theAlerts.getPeriod());
+		foundAlerts.setUrl(theAlerts.getUrl());
+
+		alertsService.save(foundAlerts);
 		
 		return theAlerts;
 	}
@@ -87,7 +95,7 @@ public class AlertsRestController {
 		
 		if(tempAlerts==null)
 			throw new RuntimeException("Alerts id not found - " + alertsId);
-		
+
 		alertsService.deleteById(alertsId);
 		
 		return "Alerts deleted with id of " + alertsId; 
