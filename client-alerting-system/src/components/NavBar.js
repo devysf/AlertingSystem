@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
-import jwt_decode from "jwt-decode";
+import whoami from "../util/whoami";
 
 export default class NavBar extends Component {
   
@@ -17,14 +17,7 @@ export default class NavBar extends Component {
       this.setState({
         isAuthenticate : true
       })
-
-      const token = localStorage.getItem("jwtToken");
-      const decoded = jwt_decode(token);
-    
-      console.log("Decoded 123")
-      console.log(decoded);
-      this.setState({username : decoded.sub})
-
+      this.setState({username : whoami()})
     }
 
   

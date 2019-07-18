@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import axiosApi from "../axios-config/axios";
+import whoami from "../util/whoami";
 
 export default class ListItem extends Component {
   constructor(){
@@ -36,10 +37,30 @@ export default class ListItem extends Component {
 
   render() {
     console.log("List item Component")
-    console.log(this.props);
+    console.log(whoami());
+
+    const whoisloggedin = whoami();
     const { id, name, url, http_method, period,createdBy } = this.props.alert;
 
+    const deleteUpdateButton = (
+      <div>
+        <button
+          onClick={this.onUpdateClick.bind(this)}
+          className="btn btn-success"
+        >
+          Update
+        </button>
+
+        <button
+          onClick={this.onDeleteClick.bind(this)}
+          className="btn btn-danger"
+        >
+          Delete
+        </button>
+      </div>
+    )
     
+
     return (
 
         <tr >
@@ -49,19 +70,9 @@ export default class ListItem extends Component {
           <td onClick={this.goReportsPage} >{period}</td>
           <td onClick={this.goProfilePage} >{createdBy}</td>
 
-          <button
-            onClick={this.onUpdateClick.bind(this)}
-            className="btn btn-success"
-          >
-            Update
-          </button>
-
-          <button
-            onClick={this.onDeleteClick.bind(this)}
-            className="btn btn-danger"
-          >
-            Delete
-          </button>
+          {whoisloggedin==createdBy?deleteUpdateButton : null}
+         
+         
 
         </tr>    
     );
