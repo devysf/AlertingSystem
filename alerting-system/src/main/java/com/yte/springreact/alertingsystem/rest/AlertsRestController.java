@@ -89,32 +89,53 @@ public class AlertsRestController {
     
     @CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/alerts")
-	public Alerts updateAlerts(@RequestBody Alerts theAlerts) {
+	public Alerts updateAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
+		Alerts foundAlerts = alertsService.findById(theAlerts.getId());
+
 		System.out.println("Alerts asdaaaaaaaaaaaaaaaaa" + theAlerts);
 
-		Alerts foundAlerts = alertsService.findById(theAlerts.getId());
-		foundAlerts.setName(theAlerts.getName());
-		foundAlerts.setHttp_method(theAlerts.getHttp_method());
-		foundAlerts.setPeriod(theAlerts.getPeriod());
-		foundAlerts.setUrl(theAlerts.getUrl());
+		String foundUser = request.getUserPrincipal().getName();
+		String createdBy = foundAlerts.getCreatedBy();
+		System.out.println("USERRRR --> " + foundUser + "   "  + createdBy);
 
-		alertsService.save(foundAlerts);
-		
-		return theAlerts;
+		if(foundUser.equals(createdBy))
+		{
+			foundAlerts.setName(theAlerts.getName());
+			foundAlerts.setHttp_method(theAlerts.getHttp_method());
+			foundAlerts.setPeriod(theAlerts.getPeriod());
+			foundAlerts.setUrl(theAlerts.getUrl());
+
+			alertsService.save(foundAlerts);
+			return theAlerts;
+		}
+
+
+		throw new RuntimeException(foundUser + ", you are update  " +createdBy+ "'s alerts. You dont have permission" );
 	}
 	
     @CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("/alerts/{alertsId}")
-	public String deleteAlerts(@PathVariable int alertsId) {
-		Alerts tempAlerts = alertsService.findById(alertsId);
+	public String deleteAlerts(HttpServletRequest request,@PathVariable int alertsId) {
+		Alerts foundAlerts = alertsService.findById(alertsId);
 		
-		if(tempAlerts==null)
+		if(foundAlerts==null)
 			throw new RuntimeException("Alerts id not found - " + alertsId);
 
-		alertsService.deleteById(alertsId);
-		
-		return "Alerts deleted with id of " + alertsId; 
-		
+
+		String foundUser = request.getUserPrincipal().getName();
+		String createdBy = foundAlerts.getCreatedBy();
+		System.out.println("USERRRR --> " + foundUser + "   "  + createdBy);
+
+		if(foundUser.equals(createdBy))
+		{
+			alertsService.deleteById(alertsId);
+			return "Success";
+		}
+
+
+
+		throw new RuntimeException(foundUser + ", you are delete  " +createdBy+ "'s alerts. You dont have permission" );
+
 	}
 	
 }
