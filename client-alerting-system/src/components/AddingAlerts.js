@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axiosApi from "../axios-config/axios";
-import jwt_decode from "jwt-decode";
 
 export default class AddingAlerts extends Component {
 
@@ -13,7 +12,8 @@ export default class AddingAlerts extends Component {
       name: "",
       url: "",
       http_method: "",
-      period: ""
+      period: "",
+      errors : {}
     };
 
     this.onChange = this.onChange.bind(this);
@@ -36,7 +36,7 @@ export default class AddingAlerts extends Component {
        id:alertState.id,
        name : alertState.name,
        url : alertState.url,
-       http_method : alertState.url,
+       http_method : alertState.http_method,
        period : alertState.period
      })
     }
@@ -67,12 +67,25 @@ export default class AddingAlerts extends Component {
         .then(res => {
           console.log("axios put updating alerts")
           ;
+          console.log(res.data);
 
-          window.location.href = "lists";
+          if(res.data=="success"){
+            this.setState({
+              name: "",
+              url: "",
+              http_method: "",
+              period: ""}
+            );
+            window.location.href = "lists";
+          }
+
+          this.setState({errors : res.data});
 
         })
        .catch(err=> {console.log("errroor " + err )})
       
+      
+
     }else{
         console.log("isUpdateFalse")
 
@@ -86,23 +99,29 @@ export default class AddingAlerts extends Component {
         .post("http://localhost:8080/api/alerts",newAlerts)
         .then(res => {
             console.log("axios post adding alerts");
-            window.location.href = "lists";
+
+            console.log(res.data);
+
+            if(res.data=="success"){
+              this.setState({
+                name: "",
+                url: "",
+                http_method: "",
+                period: ""}
+              );
+              window.location.href = "lists";
+
+            }
+            this.setState({errors : res.data});
 
         })
         .catch(err=> {console.log("errroor " + err )})
         
         console.log(newAlerts);
 
-        this.setState({
-          name: "",
-          url: "",
-          http_method: "",
-          period: ""}
-        );
+       
     }
   
-
-
   }
 
   onClick(e){
@@ -117,6 +136,7 @@ export default class AddingAlerts extends Component {
 
     console.log("Update");
     console.log(this.state)
+    const {errors} = this.state;
 
     return (
       <div>
@@ -136,6 +156,7 @@ export default class AddingAlerts extends Component {
                       value={this.state.name}
                       onChange={this.onChange}
                       />
+                      {errors.name && <div className="text-danger">{errors.name}</div>}
                 </div>
 
                 <div className="form-group">
@@ -159,6 +180,10 @@ export default class AddingAlerts extends Component {
                       value={this.state.url}
                       onChange={this.onChange}
                       />
+
+                       {errors.url && <div className="text-danger">{errors.url}</div>}
+
+                      
                 </div>
 
                 <div className="form-group">
@@ -174,6 +199,9 @@ export default class AddingAlerts extends Component {
                       value={this.state.http_method}
                       onChange={this.onChange}
                       />
+                      
+                      
+                      {errors.http_method && <div className="text-danger">{errors.http_method}</div>}
                 </div>
 
                 <div className="form-group">
@@ -189,6 +217,9 @@ export default class AddingAlerts extends Component {
                       value={this.state.period}
                       onChange={this.onChange}
                       />
+
+                       {errors.period && <div className="text-danger">{errors.period}</div>}
+                      
                 </div>
 
                 <button type="submit" className="btn    btn-primary">

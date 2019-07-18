@@ -1,10 +1,15 @@
 package com.yte.springreact.alertingsystem.entity;
 
 
+import org.hibernate.validator.constraints.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity(name = "Alerts")
@@ -17,15 +22,20 @@ public class Alerts {
 	private int id;
 	
 	@Column(name="name")
+	@NotEmpty
 	private String name;
 
 	@Column(name="url")
+	@NotEmpty
+	@URL
 	private String url;
 	
 	@Column(name="http_method")
+	@NotEmpty
 	private String http_method;
 
 	@Column(name="period")
+	@Min(value = 1000, message = "Period is formatted in ms. Please enter 1000 or multiples of 1000.")
 	private int period;
 
 	@Column(name="createdBy")

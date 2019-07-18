@@ -1,11 +1,15 @@
 package com.yte.springreact.alertingsystem.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.yte.springreact.alertingsystem.entity.auth.User;
+import com.yte.springreact.alertingsystem.repository.AlertsRepository;
 import com.yte.springreact.alertingsystem.service.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.yte.springreact.alertingsystem.AlertingSystemApplication;
@@ -13,6 +17,8 @@ import com.yte.springreact.alertingsystem.entity.Alerts;
 import com.yte.springreact.alertingsystem.service.AlertsService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 @RestController
 @RequestMapping("/api")
@@ -20,11 +26,13 @@ public class AlertsRestController {
 			
 	private AlertsService alertsService;
 	private UserService userService;
+	private AlertsRepository alertsRepository;
 
 	@Autowired
-	public AlertsRestController(AlertsService theAlertsService,UserService theUserService) {
+	public AlertsRestController(AlertsService theAlertsService,UserService theUserService, AlertsRepository theAlertsRepository) {
 		alertsService = theAlertsService;
 		userService = theUserService;
+		alertsRepository = theAlertsRepository;
 	}
 	
 	@GetMapping("/hello")
@@ -66,7 +74,7 @@ public class AlertsRestController {
 	
     @CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/alerts")
-	public User addAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
+	public ResponseEntity<?> addAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
 		
 		// also just in case they pass an id in JSON ... set id to 0
 		// this is to force a save of new item ... instead of update
@@ -78,18 +86,31 @@ public class AlertsRestController {
 		System.out.println("Id --> " + foundUser.getId());
 
 		theAlerts.setCreatedBy(foundUser.getUsername());
-		Alerts savedAlerts = alertsService.save(theAlerts);
-		foundUser.getAlerts().add(savedAlerts);
+		try{
+			Alerts savedAlerts = alertsService.save(theAlerts);
+			foundUser.getAlerts().add(savedAlerts);
+		}
+		catch (ConstraintViolationException e){
+			System.out.println("Alerts save is fail. " + e.getConstraintViolations());
+
+			Map<String,String> violations = new HashMap() ;
+			for(ConstraintViolation cv : e.getConstraintViolations()){
+				System.out.println(cv);
+				violations.put(cv.getPropertyPath().toString(),cv.getMessage());
+			}
+
+			return ResponseEntity.ok(violations);
+		}
 
 
 		userService.save(foundUser);
 
-		return foundUser;
+		return ResponseEntity.ok("success");
 	}
     
     @CrossOrigin(origins = "http://localhost:3000")
 	@PutMapping("/alerts")
-	public Alerts updateAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
+	public ResponseEntity<?> updateAlerts(HttpServletRequest request, @RequestBody Alerts theAlerts) {
 		Alerts foundAlerts = alertsService.findById(theAlerts.getId());
 
 		System.out.println("Alerts asdaaaaaaaaaaaaaaaaa" + theAlerts);
@@ -105,12 +126,34 @@ public class AlertsRestController {
 			foundAlerts.setPeriod(theAlerts.getPeriod());
 			foundAlerts.setUrl(theAlerts.getUrl());
 
-			alertsService.save(foundAlerts);
-			return theAlerts;
+
+			try{
+				//alertsService.save(foundAlerts);
+				alertsRepository.save(foundAlerts);
+			}
+			catch (ConstraintViolationException e){
+				System.out.println("Alerts update is fail. " + e.getConstraintViolations());
+
+				Map<String,String> violations = new HashMap() ;
+				for(ConstraintViolation cv : e.getConstraintViolations()){
+					System.out.println(cv);
+					violations.put(cv.getPropertyPath().toString(),cv.getMessage());
+				}
+
+				return ResponseEntity.ok(violations);
+			}
+			catch (Exception e){
+				return ResponseEntity.ok("failed in e" +e );
+
+			}
+
+
+			return ResponseEntity.ok("success");
+		}
+		else {
+			return ResponseEntity.ok(new RuntimeException(foundUser + ", you are update  " +createdBy+ "'s alerts. You dont have permission" ));
 		}
 
-
-		throw new RuntimeException(foundUser + ", you are update  " +createdBy+ "'s alerts. You dont have permission" );
 	}
 	
     @CrossOrigin(origins = "http://localhost:3000")
