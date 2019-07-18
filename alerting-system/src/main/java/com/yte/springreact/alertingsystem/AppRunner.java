@@ -1,6 +1,8 @@
 package com.yte.springreact.alertingsystem;
 
 import com.yte.springreact.alertingsystem.entity.Alerts;
+import com.yte.springreact.alertingsystem.entity.Results;
+import com.yte.springreact.alertingsystem.sending_email.SendingEmailService;
 import com.yte.springreact.alertingsystem.service.AlertsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,15 @@ public class AppRunner implements CommandLineRunner {
             //System.out.println("\n" + alerts.getName() + " entering.");
 
             getStatusService.getStatus(alerts);
+
+            //Sending email operation
+            List<Results> listOfResults = alerts.getResults();
+            int length = listOfResults.size()-1;
+
+            if(length>=1 && listOfResults.get(length).getStatus()==0 && listOfResults.get(length-1).getStatus()== 1 ){
+                System.out.println("Sending email in scheduled");
+                SendingEmailService.sendEmail(alerts, listOfResults.get(length));
+            }
 
             //System.out.println(alerts.getName() + " exiting.\n");
         }

@@ -10,6 +10,7 @@ export default class Register extends Component {
       username: '',
       password: '',
       passwordConfirm: '',
+      email:"",
       errors: {}
     };
 
@@ -33,7 +34,8 @@ export default class Register extends Component {
     const newUser = {
       username: this.state.username,
       password: this.state.password,
-      passwordConfirm: this.state.passwordConfirm
+      passwordConfirm: this.state.passwordConfirm,
+      email: this.state.email
     };
   
     
@@ -77,6 +79,19 @@ export default class Register extends Component {
                   />
 
                    {errors.usernameError && <div className="text-danger">{errors.usernameError}</div>}
+                </div>
+
+                <div className="form-group">
+                  <input
+                    className={'form-control form-control-lg'}
+                    placeholder="email"
+                    name="email"
+                    type="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                  />
+
+                   {errors.emailError && <div className="text-danger">{errors.emailError}</div>}
                 </div>
           
 
