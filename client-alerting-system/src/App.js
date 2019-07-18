@@ -12,6 +12,9 @@ import AddingAlerts from "./components/AddingAlerts";
 import AlertsList from "./components/AlertsList";
 import ReportsAlerts from "./components/ReportsAlerts";
 
+import ProfilePage from "./components/ProfilePage";
+
+
 import jwt_decode from "jwt-decode";
 
 //localStorage.clear();
@@ -42,6 +45,10 @@ function App() {
           <Route exact path="/adding" component={AddingAlerts} />
           <Route exact path="/lists" component={AlertsList} />
           <Route exact path="/lists/:id" component={ReportsAlerts} />
+
+          <Route exact path="/profile/:id" component={ProfilePage} />
+        
+
         </div>
       </Router>
 

@@ -39,8 +39,8 @@ public class SendingEmailService {
 
             User foundUser = userService.findByUsername(alerts.getCreatedBy());
             helper.setTo(foundUser.getEmail());
-            helper.setText("Your website " + alerts.getName() + " is become down at " + results.getDate());
-            helper.setSubject("ALERT!!!" );
+            helper.setText("Hi "+ alerts.getCreatedBy() + ",\n\nYour website " + alerts.getName() + " is become down at " + results.getDate());
+            helper.setSubject("!!!ALERT!!!" );
 
             sender.send(message);
             return "Email Sent!";

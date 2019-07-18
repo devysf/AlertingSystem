@@ -64,6 +64,15 @@ public class GetStatusService {
 
                 //add results to the Alerts
                 Results results = new Results(0);
+
+                //Add date in results
+                Calendar cal = Calendar.getInstance();
+                Date date=cal.getTime();
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                String formattedDate=dateFormat.format(date);
+
+                results.setDate(formattedDate);
+
                 resultsService.save(results);
 
                 alert.getResults().add(results);
@@ -74,6 +83,15 @@ public class GetStatusService {
         } catch (Exception e) {
             //add results to the Alerts
             Results results = new Results(0);
+
+            //Add date in results
+            Calendar cal = Calendar.getInstance();
+            Date date=cal.getTime();
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String formattedDate=dateFormat.format(date);
+
+            results.setDate(formattedDate);
+
             resultsService.save(results);
 
             alert.getResults().add(results);

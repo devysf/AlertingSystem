@@ -1,6 +1,7 @@
 package com.yte.springreact.alertingsystem.rest;
 
 import java.util.List;
+import java.util.Set;
 
 import com.yte.springreact.alertingsystem.entity.auth.User;
 import com.yte.springreact.alertingsystem.service.auth.UserService;
@@ -48,6 +49,20 @@ public class AlertsRestController {
 
 		return theAlerts;
 	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping("/alertsByUsername/{username}")
+	public Set<Alerts> getAlertsByUsername(@PathVariable String username) {
+
+		User foundUser = userService.findByUsername(username);
+
+		if(foundUser == null)
+			throw new RuntimeException("User not found - " + username);
+
+		return foundUser.getAlerts();
+	}
+
+
 	
     @CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/alerts")

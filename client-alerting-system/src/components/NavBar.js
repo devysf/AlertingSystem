@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
+import jwt_decode from "jwt-decode";
+
 export default class NavBar extends Component {
   
   constructor(arg){
     super(arg);
     this.state = {
-      isAuthenticate : false
+      isAuthenticate : false,
+      username : ""
     }
   }
   componentDidMount(){
@@ -14,7 +17,18 @@ export default class NavBar extends Component {
       this.setState({
         isAuthenticate : true
       })
+
+      const token = localStorage.getItem("jwtToken");
+      const decoded = jwt_decode(token);
+    
+      console.log("Decoded 123")
+      console.log(decoded);
+      this.setState({username : decoded.sub})
+
     }
+
+  
+
   }
 
 
@@ -26,7 +40,10 @@ export default class NavBar extends Component {
 
 
   render() {
-    const {isAuthenticate} = this.state;
+    
+    console.log("Render********");
+
+    console.log(this.state);
 
     const authLinks = (
 
@@ -37,6 +54,11 @@ export default class NavBar extends Component {
         <li className="nav-item">
           <a className="nav-link" href="/lists">List Alerts</a>
         </li>
+
+        <li className="nav-item">
+          <a className="nav-link" href={`/profile/${this.state.username}`}>Profile</a>
+        </li>
+
         <li className="nav-item">
           <a className="nav-link" onClick={this.logoutClick} href="/login">Logout</a>
         </li>

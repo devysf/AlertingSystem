@@ -7,6 +7,13 @@ export default class ListItem extends Component {
     super();
 
     this.goReportsPage = this.goReportsPage.bind(this);
+    this.goProfilePage = this.goProfilePage.bind(this);
+
+  }
+
+  goProfilePage(){
+    console.log(this.props);
+    this.props.history.push(`/profile/${this.props.alert.createdBy}`);
   }
 
   goReportsPage(){
@@ -29,7 +36,7 @@ export default class ListItem extends Component {
 
   render() {
     console.log("List item Component")
-    console.log(this.props.alert);
+    console.log(this.props);
     const { id, name, url, http_method, period,createdBy } = this.props.alert;
 
     
@@ -40,7 +47,7 @@ export default class ListItem extends Component {
           <td onClick={this.goReportsPage} >{url}</td>
           <td onClick={this.goReportsPage} >{http_method}</td>
           <td onClick={this.goReportsPage} >{period}</td>
-          <td onClick={this.goReportsPage} >{createdBy}</td>
+          <td onClick={this.goProfilePage} >{createdBy}</td>
 
           <button
             onClick={this.onUpdateClick.bind(this)}
