@@ -126,10 +126,11 @@ public class AlertsRestController {
 			foundAlerts.setPeriod(theAlerts.getPeriod());
 			foundAlerts.setUrl(theAlerts.getUrl());
 
-
+			System.out.println("Found Alerts "+ foundAlerts);
 			try{
-				//alertsService.save(foundAlerts);
-				alertsRepository.save(foundAlerts);
+				//There is a bug in here.
+				alertsService.save(foundAlerts);
+				//alertsRepository.save(foundAlerts);
 			}
 			catch (ConstraintViolationException e){
 				System.out.println("Alerts update is fail. " + e.getConstraintViolations());
@@ -143,7 +144,9 @@ public class AlertsRestController {
 				return ResponseEntity.ok(violations);
 			}
 			catch (Exception e){
-				return ResponseEntity.ok("failed in e" +e );
+				Map<String ,String> violations = new HashMap<>();
+				violations.put("name", "Something goes wrong.Please control every field.");
+				return ResponseEntity.ok(violations);
 
 			}
 
@@ -158,26 +161,29 @@ public class AlertsRestController {
 	
     @CrossOrigin(origins = "http://localhost:3000")
 	@DeleteMapping("/alerts/{alertsId}")
-	public String deleteAlerts(HttpServletRequest request,@PathVariable int alertsId) {
+	public ResponseEntity<?> deleteAlerts(HttpServletRequest request,@PathVariable int alertsId) {
 		Alerts foundAlerts = alertsService.findById(alertsId);
-		
+		User foundUser = userService.findByUsername(request.getUserPrincipal().getName());
+
 		if(foundAlerts==null)
 			throw new RuntimeException("Alerts id not found - " + alertsId);
 
 
-		String foundUser = request.getUserPrincipal().getName();
 		String createdBy = foundAlerts.getCreatedBy();
-		System.out.println("USERRRR --> " + foundUser + "   "  + createdBy);
+		System.out.println("USERRRR delete --> " + foundUser.getUsername() + "   "  + createdBy);
 
-		if(foundUser.equals(createdBy))
+		if(foundUser.getUsername().equals(createdBy))
 		{
+			System.out.println("Before " + foundUser.getAlerts());
+			foundUser.getAlerts().remove(foundAlerts);
+			System.out.println("After " + foundUser.getAlerts());
+			userService.save(foundUser);
 			alertsService.deleteById(alertsId);
-			return "Success";
+			return ResponseEntity.ok("success");
 		}
 
 
-
-		throw new RuntimeException(foundUser + ", you are delete  " +createdBy+ "'s alerts. You dont have permission" );
+		return ResponseEntity.ok( new RuntimeException(foundUser + ", you are delete  " +createdBy+ "'s alerts. You dont have permission" ));
 
 	}
 	

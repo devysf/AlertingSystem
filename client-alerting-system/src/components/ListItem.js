@@ -26,8 +26,19 @@ export default class ListItem extends Component {
 
     axiosApi
       .delete(`http://localhost:8080/api/alerts/${this.props.alert.id}`)
+      .then(res => {
+          if(res.data=="success")
+            window.location.href = "lists";
 
-      window.location.href = "lists";
+          console.log("err");
+          console.log(res.data);
+
+      })
+      .catch(err => {
+        console.log("error occured in delete");
+        console.log(err);
+      })
+
     }
 
     onUpdateClick (){

@@ -88,7 +88,7 @@ public class AlertsRestControllerTest {
         given(alertsService.save(any(Alerts.class))).willReturn(alerts);
 
         mockMvc.perform(post("/api/alerts")
-                .content(asJsonString(new Alerts("Youtube", "youtube.com", "GET")))
+                .content(asJsonString(new Alerts("Youtube", "youtube.com", "GET",2000)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -112,7 +112,7 @@ public class AlertsRestControllerTest {
 
 
         mockMvc.perform(put("/api/alerts")
-                .content(asJsonString(new Alerts("Youtube", "youtube.com", "GET")))
+                .content(asJsonString(new Alerts("Youtube", "youtube.com", "GET",2000)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

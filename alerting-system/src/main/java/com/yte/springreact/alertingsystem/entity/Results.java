@@ -12,18 +12,13 @@ import javax.persistence.Table;
 import java.util.Calendar;
 import java.util.Date;
 @Entity(name = "Results")
-@Table(name="results")
+@Table(name="results" , schema = "public")
 public class Results {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	
-	
-	@Column(name="alerts_id")
-	private int alerts_id; 
-	
 
 	@Column(name="status")
 	private int status;
@@ -50,14 +45,6 @@ public class Results {
 		this.date = date;
 	}
 
-	public int getAlerts_id() {
-		return alerts_id;
-	}
-
-	public void setAlerts_id(int alerts_id) {
-		this.alerts_id = alerts_id;
-	}
-
 	public int getStatus() {
 		return status;
 	}
@@ -65,12 +52,12 @@ public class Results {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+
 
 	@Override
 	public String toString() {
 		return "Results [id=" + id + ", alerts_id=" + ", status=" + status + "]";
-	} 
+	}
 
-	
+
 }
