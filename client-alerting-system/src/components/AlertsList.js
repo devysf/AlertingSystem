@@ -14,8 +14,6 @@ export default class AlertsList extends Component {
     this.state = {
      alerts : []
     };
-
-   
   }
 
   componentDidMount(){
@@ -23,21 +21,15 @@ export default class AlertsList extends Component {
       this.props.history.push('/login');
     }
     
-    console.log("Token ---> " + localStorage.getItem("jwtToken"));   
     axiosApi
     .get("http://localhost:8080/api/alerts")
-    .then(res => {
-        console.log("ress");
-        console.log( res.data);
+    .then(res => {      
         this.setState({alerts : res.data});
       })
       .catch(err=> {
-        console.log("err");
         console.log(err);          
       });
   }
-
-
 
   render() {
 
@@ -62,13 +54,9 @@ export default class AlertsList extends Component {
               { this.state.alerts.map(alert => (
                   <ListItem key={alert.id} alert={alert} history={this.props.history}/>
               ))}
-
             </tbody>
+
         </table>
-
-
-       
-
       </div>
     );
   }

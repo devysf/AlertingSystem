@@ -9,7 +9,6 @@ export default class ListItem extends Component {
 
     this.goReportsPage = this.goReportsPage.bind(this);
     this.goProfilePage = this.goProfilePage.bind(this);
-
   }
 
   goProfilePage(){
@@ -21,18 +20,13 @@ export default class ListItem extends Component {
     console.log(this.props);
     this.props.history.push(`/lists/${this.props.alert.id}`,[this.props.alert]);
   }
-  onDeleteClick (){
-    console.log("Delete button pressed")
 
+  onDeleteClick (){
     axiosApi
       .delete(`http://localhost:8080/api/alerts/${this.props.alert.id}`)
       .then(res => {
           if(res.data=="success")
             window.location.href = "lists";
-
-          console.log("err");
-          console.log(res.data);
-
       })
       .catch(err => {
         console.log("error occured in delete");
@@ -42,14 +36,10 @@ export default class ListItem extends Component {
     }
 
     onUpdateClick (){
-      console.log("Update button pressed")
       this.props.history.push("/adding",[this.props.alert])
-      }
+    }
 
   render() {
-    console.log("List item Component")
-    console.log(whoami());
-
     const whoisloggedin = whoami();
     const { id, name, url, http_method, period,createdBy } = this.props.alert;
 
@@ -82,9 +72,7 @@ export default class ListItem extends Component {
           <td onClick={this.goProfilePage} >{createdBy}</td>
 
           {whoisloggedin==createdBy?deleteUpdateButton : null}
-         
-         
-
+          
         </tr>    
     );
   }

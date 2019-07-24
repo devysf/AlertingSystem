@@ -12,34 +12,25 @@ export default class NavBar extends Component {
       username : ""
     }
   }
+
   componentDidMount(){
     if (localStorage.getItem("jwtToken")) {
       this.setState({
         isAuthenticate : true
       })
       this.setState({username : whoami()})
-    }
-
-  
-
+    }  
   }
 
-
   logoutClick(e){
-    console.log("Logput")
+    console.log("Logout")
     localStorage.removeItem('jwtToken');
-
   }
 
 
   render() {
     
-    console.log("Render********");
-
-    console.log(this.state);
-
     const authLinks = (
-
       <ul className="navbar-nav">
       <li className="nav-item">
           <a className="nav-link" href="/adding">Add Alerts</a>
@@ -57,7 +48,7 @@ export default class NavBar extends Component {
         </li>
    </ul>
       
-  );
+  )
 
   const guestLinks = (
     <div>
@@ -91,7 +82,6 @@ export default class NavBar extends Component {
             </li>
           </ul>
 
-         
           {this.state.isAuthenticate? authLinks :guestLinks}
         </div>
     </nav>

@@ -22,9 +22,6 @@ if(localStorage.getItem('jwtToken')){
   const token = localStorage.getItem("jwtToken");
   const decoded = jwt_decode(token);
 
-  console.log("Decoded ")
-  console.log(decoded);
-
   // Check for expired token
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {

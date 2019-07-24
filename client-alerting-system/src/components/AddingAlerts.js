@@ -19,15 +19,14 @@ export default class AddingAlerts extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onClick = this.onClick.bind(this);
-
   }
+
   componentDidMount(){
     if (!localStorage.getItem("jwtToken")) {
       this.props.history.push('/login');
     }
-
     
- 
+    //Control if user want to add new alerts or update existing alerts
     if(this.props.location.state){
       var alertState = this.props.location.state[0];
 
@@ -40,8 +39,6 @@ export default class AddingAlerts extends Component {
        period : alertState.period
      })
     }
-
-   
   }
 
   onChange(e) {
@@ -51,9 +48,9 @@ export default class AddingAlerts extends Component {
   onSubmit(e){
     e.preventDefault();
 
-    if(this.state.isUpdate == true){
-      console.log("isUpdateTrue");
-      
+    //update existing alerts or add new alerts
+    if(this.state.isUpdate == true){    
+
       const updateAlerts ={
         id:this.state.id,
         name: this.state.name,
@@ -65,9 +62,6 @@ export default class AddingAlerts extends Component {
       axiosApi
         .put("http://localhost:8080/api/alerts",updateAlerts)
         .then(res => {
-          console.log("axios put updating alerts")
-          ;
-          console.log(res.data);
 
           if(res.data=="success"){
             this.setState({
@@ -82,27 +76,22 @@ export default class AddingAlerts extends Component {
           this.setState({errors : res.data});
 
         })
-       .catch(err=> {console.log("errroor " + err )})
-      
-      
-
+       .catch(err=> {console.log("errroor " + err )})     
     }else{
-        console.log("isUpdateFalse")
 
         const newAlerts ={
           name: this.state.name,
           url : this.state.url,
           http_method : this.state.http_method,
           period : this.state.period
-                }
+        }
+
         axiosApi
         .post("http://localhost:8080/api/alerts",newAlerts)
         .then(res => {
-            console.log("axios post adding alerts");
-
-            console.log(res.data);
-
+           
             if(res.data=="success"){
+
               this.setState({
                 name: "",
                 url: "",
@@ -110,17 +99,13 @@ export default class AddingAlerts extends Component {
                 period: ""}
               );
               window.location.href = "lists";
-
             }
             this.setState({errors : res.data});
 
         })
         .catch(err=> {console.log("errroor " + err )})
-        
-        console.log(newAlerts);
 
-       
-    }
+      }
   
   }
 
@@ -133,20 +118,20 @@ export default class AddingAlerts extends Component {
   }
 
   render() {
-
-    console.log("Update");
-    console.log(this.state)
     const {errors} = this.state;
 
     return (
       <div>
         <h1> AddingAlerts </h1>
         <div className="container">
+            
             <form onSubmit={this.onSubmit}>
+                
                 <div className="form-group">
                     <label htmlFor="name">
                         Name:
                     </label>
+                   
                     <input 
                       type="name"
                       className="form-control"
@@ -160,7 +145,6 @@ export default class AddingAlerts extends Component {
                 </div>
 
                 <div className="form-group">
-
                     <label htmlFor="url">
                         URL:
                     </label>
@@ -168,7 +152,6 @@ export default class AddingAlerts extends Component {
                     <div className="btn-group"  role="group" aria-label="Basic   example">
                       <button onClick={this.onClick} name="http" type="button" className="btn btn-secondary">http://</button>
                       <button onClick={this.onClick} name="https" type="button" className="btn btn-secondary">https://</button>
-                      
                     </div>
 
                     <input 
@@ -180,10 +163,7 @@ export default class AddingAlerts extends Component {
                       value={this.state.url}
                       onChange={this.onChange}
                       />
-
-                       {errors.url && <div className="text-danger">{errors.url}</div>}
-
-                      
+                       {errors.url && <div className="text-danger">{errors.url}</div>}                     
                 </div>
 
                 <div className="form-group">
@@ -198,9 +178,7 @@ export default class AddingAlerts extends Component {
                       placeholder="Enter a http_method"
                       value={this.state.http_method}
                       onChange={this.onChange}
-                      />
-                      
-                      
+                      />  
                       {errors.http_method && <div className="text-danger">{errors.http_method}</div>}
                 </div>
 
@@ -208,6 +186,7 @@ export default class AddingAlerts extends Component {
                     <label htmlFor="period">
                         period:
                     </label>
+                    
                     <input 
                       type="period"
                       className="form-control"
@@ -217,15 +196,12 @@ export default class AddingAlerts extends Component {
                       value={this.state.period}
                       onChange={this.onChange}
                       />
-
-                       {errors.period && <div className="text-danger">{errors.period}</div>}
-                      
+                      {errors.period && <div className="text-danger">{errors.period}</div>}            
                 </div>
 
                 <button type="submit" className="btn    btn-primary">
                     Submit
                 </button>
-
             </form>
         </div>
       </div>

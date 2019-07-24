@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import axios from "axios";
 
 export default class Register extends Component {
+
   constructor() {
     super();
 
@@ -42,15 +43,13 @@ export default class Register extends Component {
     axios
     .post("http://localhost:8080/register",newUser)
     .then(res => {
-      console.log("Login then")
-      console.log(res);
-      if(res.data==="success")
+      
+      //control if input values are valid.
+      if(res.data==="success"){
         this.props.history.push("/lists");
+      }
+
       this.setState({errors : res.data});
-
-      console.log("axios")
-      console.log(res.data);
-
     })
     .catch(err => console.log(err));
   }
@@ -63,12 +62,14 @@ export default class Register extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
+             
               <h1 className="display-4 text-center">Sign Up</h1>
               <p className="lead text-center">
                 Create your account
               </p>
-              <form noValidate onSubmit={this.onSubmit}>
-                
+
+              <form noValidate onSubmit={this.onSubmit}>  
+               
                 <div className="form-group">
                   <input
                     className={'form-control form-control-lg'}
@@ -77,7 +78,6 @@ export default class Register extends Component {
                     value={this.state.username}
                     onChange={this.onChange}
                   />
-
                    {errors.usernameError && <div className="text-danger">{errors.usernameError}</div>}
                 </div>
 
@@ -90,7 +90,6 @@ export default class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                   />
-
                    {errors.emailError && <div className="text-danger">{errors.emailError}</div>}
                 </div>
           
@@ -104,7 +103,6 @@ export default class Register extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                   />
-
                   {errors.passwordError && <div className="text-danger">{errors.passwordError}</div>}
                 </div>
               
@@ -117,12 +115,11 @@ export default class Register extends Component {
                     value={this.state.passwordConfirm}
                     onChange={this.onChange}
                   />
-                  
                   {errors.passwordConfirmError && <div className="text-danger">{errors.passwordConfirmError}</div>}
-
                 </div>
                
                 <input type="submit" className="btn btn-info btn-block mt-4" />
+              
               </form>
             </div>
           </div>

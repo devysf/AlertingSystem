@@ -16,13 +16,14 @@ export default class ReportsAlerts extends Component {
      tableX:[10,20,3,4,5,6]
     };
   }
+
   componentDidMount(){
     if (!localStorage.getItem("jwtToken")) {
       this.props.history.push('/login');
     }
-        const setIntervalTime = this.props.location.state[0].period;
 
-        setInterval(this.getResultsInDatabase.bind(this), setIntervalTime);
+    const setIntervalTime = this.props.location.state[0].period;
+    setInterval(this.getResultsInDatabase.bind(this), setIntervalTime);
       
   }
 
@@ -35,18 +36,15 @@ export default class ReportsAlerts extends Component {
           this.setState({alert : res.data});
           this.setState({loading:true});
         
-          //another aproach to show alert status 
+          //slice results to show alert status in graph 
           var length = res.data.results.length;
           var sliced = res.data.results.slice(length-6, length).map(res=>{return res.status});
-
           var sliced2 = res.data.results.slice(length-6, length).map(res=>{return res.date});
 
-          
           this.setState({tableResult : sliced});
           this.setState({tableX :sliced2 })
         })
         .catch(err=> {
-
           console.log("errr" + err);
         })
   }
@@ -81,13 +79,11 @@ export default class ReportsAlerts extends Component {
             </div>
             
     )
-    return (
 
+    return (
       <div className="container">
         {loading==true ? graph : <h1>Loading</h1> }
-
       </div>
-      
     );
   }
 }
