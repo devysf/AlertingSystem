@@ -5,7 +5,6 @@ My first Spring-React-PostgresSql Full Stack Web Application to practise what i 
 ## Live Demo
 
 To see the app in action, go to [https://alertingsystem.herokuapp.com/](https://alertingsystem.herokuapp.com/)
-## Steps to Setup the Spring Boot Back end app (polling-app-server)
 
 ### Installing
 
