@@ -16,16 +16,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins={ "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins={"*"})
 public class JwtAuthenticationRestController {
 
   @Value("Authorization")
@@ -42,6 +40,7 @@ public class JwtAuthenticationRestController {
 
   @Autowired
   UserValidator userValidator;
+
   @Autowired
   LoginValidator loginValidator;
 
@@ -56,11 +55,11 @@ public class JwtAuthenticationRestController {
 
     userValidator.validate(user, bindingResult);
 
+    //Another aproach to control input fields if they are valid or unvalid.
     if (bindingResult.hasErrors()) {
       ValidationError validationError = new ValidationError();
 
       for(FieldError er: bindingResult.getFieldErrors()){
-        System.out.println(er.getField() +" " + er.getCode());
         if(er.getField().equals("username"))
           validationError.setUsernameError(er.getCode());
         else if(er.getField().equals("password"))
@@ -71,7 +70,6 @@ public class JwtAuthenticationRestController {
       return ResponseEntity.ok(validationError);
     }
 
-    System.out.println("Register" + user.getId());
     userService.save(user);
 
     return ResponseEntity.ok("success");
@@ -84,11 +82,11 @@ public class JwtAuthenticationRestController {
 
     loginValidator.validate(user, bindingResult);
 
+    //Another aproach to control input fields if they are valid or unvalid.
     if (bindingResult.hasErrors()) {
       ValidationError validationError = new ValidationError();
 
       for(FieldError er: bindingResult.getFieldErrors()){
-        System.out.println(er.getField() +" " + er.getCode());
         if(er.getField().equals("username"))
           validationError.setUsernameError(er.getCode());
         else if(er.getField().equals("password"))
@@ -97,6 +95,7 @@ public class JwtAuthenticationRestController {
       return ResponseEntity.ok(validationError);
     }
 
+    //İf credentials are correct, generate token and return. After in front side store this token in browsers local storage.
     authenticate(user.getUsername(), user.getPassword());
 
     final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());

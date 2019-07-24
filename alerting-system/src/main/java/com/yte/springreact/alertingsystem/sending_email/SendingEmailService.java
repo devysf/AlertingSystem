@@ -23,6 +23,7 @@ public class SendingEmailService {
     private static AlertsService alertsService;
     private static ResultsService resultsService;
     private static UserService userService;
+
     @Autowired
     public SendingEmailService(JavaMailSender sender,AlertsService alertsService,ResultsService resultsService ,UserService userService){
         this.sender = sender;
@@ -32,7 +33,6 @@ public class SendingEmailService {
     }
 
     public static String sendEmail(Alerts alerts,Results results){
-        System.out.println(sender);
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);

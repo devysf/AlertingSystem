@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        System.out.println("Save user" + user.getId());
         //Control get id because of updating
         if(user.getId() == null){
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

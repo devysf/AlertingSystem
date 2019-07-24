@@ -37,7 +37,6 @@ public class AppRunner implements CommandLineRunner {
         List<Alerts> listOfAlerts = alertsService.findAll();
 
         //System.out.println("Period: " + period);
-
         for (Alerts alerts : listOfAlerts){
             if(period % alerts.getPeriod() != 0 )
                 continue;
@@ -58,5 +57,4 @@ public class AppRunner implements CommandLineRunner {
             //System.out.println(alerts.getName() + " exiting.\n");
         }
     }
-
 }
