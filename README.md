@@ -1,6 +1,13 @@
 # AlertSystem
 
-My first Spring-React-PostgresSql Full Stack Web Application to practise what i learned.
+My first Spring-React-PostgresSql Full Stack Web Application to practise what i learned in the Chad Darby and John Thompson's Spring Courses and Brad Traversy and Stephen Grider React Courses. 
+(
+links: 
+https://www.udemy.com/course/spring-hibernate-tutorial/
+https://www.udemy.com/course/spring-framework-5-beginner-to-guru/
+https://www.udemy.com/course/modern-react-front-to-back/
+https://www.udemy.com/course/react-redux/
+)
 
 ## Live Demo
 
